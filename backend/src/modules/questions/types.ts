@@ -37,29 +37,27 @@ export type QuestionContent = z.infer<typeof QuestionContentSchema>;
 // ─── Answer content (stored in `answer` jsonb column) ───────────────────────
 // For matching, left[i] correctly pairs with right[i].
 
-export const MultipleChoiceAnswerSchema = z.object({
+const AnswerBaseSchema = z.object({ explanation: z.string().nullable() });
+
+export const MultipleChoiceAnswerSchema = AnswerBaseSchema.extend({
     type: z.literal('multiple_choice'),
-    selected_index: z.array(z.number()),
-    explanation: z.string().nullable()
+    selected_index: z.array(z.number())
 });
 
-export const OpenEndedAnswerSchema = z.object({
+export const OpenEndedAnswerSchema = AnswerBaseSchema.extend({
     type: z.literal('open_ended'),
-    answer: z.string(),
-    explanation: z.string().nullable()
+    answer: z.string()
 });
 
-export const BooleanAnswerSchema = z.object({
+export const BooleanAnswerSchema = AnswerBaseSchema.extend({
     type: z.literal('boolean'),
-    answer: z.boolean(),
-    explanation: z.string().nullable()
+    answer: z.boolean()
 });
 
-export const MatchingAnswerSchema = z.object({
+export const MatchingAnswerSchema = AnswerBaseSchema.extend({
     type: z.literal('matching'),
     // Each pair indicates which left item matches which right item
-    pairs: z.array(z.object({ left_index: z.number(), right_index: z.number() })),
-    explanation: z.string().nullable()
+    pairs: z.array(z.object({ left_index: z.number(), right_index: z.number() }))
 });
 
 export const AnswerContentSchema = z.union([

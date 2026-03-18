@@ -190,6 +190,10 @@
                                                     {
                                                         "type": "object",
                                                         "properties": {
+                                                            "explanation": {
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            },
                                                             "type": {
                                                                 "type": "string",
                                                                 "enum": ["multiple_choice"]
@@ -197,59 +201,59 @@
                                                             "selected_index": {
                                                                 "type": "array",
                                                                 "items": { "type": "number" }
-                                                            },
-                                                            "explanation": {
-                                                                "type": "string",
-                                                                "nullable": true
                                                             }
                                                         },
                                                         "required": [
+                                                            "explanation",
                                                             "type",
-                                                            "selected_index",
-                                                            "explanation"
+                                                            "selected_index"
                                                         ]
                                                     },
                                                     {
                                                         "type": "object",
                                                         "properties": {
+                                                            "explanation": {
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            },
                                                             "type": {
                                                                 "type": "string",
                                                                 "enum": ["open_ended"]
                                                             },
-                                                            "answer": { "type": "string" },
-                                                            "explanation": {
-                                                                "type": "string",
-                                                                "nullable": true
-                                                            }
+                                                            "answer": { "type": "string" }
                                                         },
                                                         "required": [
+                                                            "explanation",
                                                             "type",
-                                                            "answer",
-                                                            "explanation"
+                                                            "answer"
                                                         ]
                                                     },
                                                     {
                                                         "type": "object",
                                                         "properties": {
+                                                            "explanation": {
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            },
                                                             "type": {
                                                                 "type": "string",
                                                                 "enum": ["boolean"]
                                                             },
-                                                            "answer": { "type": "boolean" },
-                                                            "explanation": {
-                                                                "type": "string",
-                                                                "nullable": true
-                                                            }
+                                                            "answer": { "type": "boolean" }
                                                         },
                                                         "required": [
+                                                            "explanation",
                                                             "type",
-                                                            "answer",
-                                                            "explanation"
+                                                            "answer"
                                                         ]
                                                     },
                                                     {
                                                         "type": "object",
                                                         "properties": {
+                                                            "explanation": {
+                                                                "type": "string",
+                                                                "nullable": true
+                                                            },
                                                             "type": {
                                                                 "type": "string",
                                                                 "enum": ["matching"]
@@ -271,13 +275,9 @@
                                                                         "right_index"
                                                                     ]
                                                                 }
-                                                            },
-                                                            "explanation": {
-                                                                "type": "string",
-                                                                "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "pairs", "explanation"]
+                                                        "required": ["explanation", "type", "pairs"]
                                                     }
                                                 ]
                                             },
@@ -749,6 +749,10 @@
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["multiple_choice"]
@@ -758,59 +762,59 @@
                                                                         "items": {
                                                                             "type": "number"
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["open_ended"]
                                                                     },
-                                                                    "answer": { "type": "string" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "string" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["boolean"]
                                                                     },
-                                                                    "answer": { "type": "boolean" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "boolean" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["matching"]
@@ -832,16 +836,12 @@
                                                                                 "right_index"
                                                                             ]
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "pairs",
-                                                                    "explanation"
+                                                                    "pairs"
                                                                 ]
                                                             }
                                                         ]
@@ -1087,6 +1087,10 @@
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["multiple_choice"]
@@ -1096,59 +1100,59 @@
                                                                         "items": {
                                                                             "type": "number"
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["open_ended"]
                                                                     },
-                                                                    "answer": { "type": "string" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "string" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["boolean"]
                                                                     },
-                                                                    "answer": { "type": "boolean" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "boolean" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["matching"]
@@ -1170,16 +1174,12 @@
                                                                                 "right_index"
                                                                             ]
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "pairs",
-                                                                    "explanation"
+                                                                    "pairs"
                                                                 ]
                                                             }
                                                         ]
@@ -1565,6 +1565,10 @@
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["multiple_choice"]
@@ -1574,59 +1578,59 @@
                                                                         "items": {
                                                                             "type": "number"
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["open_ended"]
                                                                     },
-                                                                    "answer": { "type": "string" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "string" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["boolean"]
                                                                     },
-                                                                    "answer": { "type": "boolean" },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
-                                                                    }
+                                                                    "answer": { "type": "boolean" }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "answer",
-                                                                    "explanation"
+                                                                    "answer"
                                                                 ]
                                                             },
                                                             {
                                                                 "type": "object",
                                                                 "properties": {
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    },
                                                                     "type": {
                                                                         "type": "string",
                                                                         "enum": ["matching"]
@@ -1648,16 +1652,12 @@
                                                                                 "right_index"
                                                                             ]
                                                                         }
-                                                                    },
-                                                                    "explanation": {
-                                                                        "type": "string",
-                                                                        "nullable": true
                                                                     }
                                                                 },
                                                                 "required": [
+                                                                    "explanation",
                                                                     "type",
-                                                                    "pairs",
-                                                                    "explanation"
+                                                                    "pairs"
                                                                 ]
                                                             }
                                                         ]
