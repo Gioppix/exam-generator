@@ -23,6 +23,13 @@
                                 {/snippet}
                             </Sidebar.MenuButton>
                         </Sidebar.MenuItem>
+                        <Sidebar.MenuItem>
+                            <Sidebar.MenuButton>
+                                {#snippet child({ props })}
+                                    <a href={resolve('/admin/dataset')} {...props}>Dataset</a>
+                                {/snippet}
+                            </Sidebar.MenuButton>
+                        </Sidebar.MenuItem>
                     </Sidebar.Menu>
                 </Sidebar.GroupContent>
             </Sidebar.Group>

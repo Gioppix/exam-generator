@@ -4,6 +4,7 @@ import { cors } from 'hono/cors';
 import { fileURLToPath } from 'url';
 import exampleRouter from './routers/example.js';
 import topicsRouter from './routers/topics.js';
+import datasetRouter from './routers/dataset.js';
 
 const app = new OpenAPIHono();
 
@@ -21,6 +22,7 @@ app.get('/health', (c) => c.json({ status: 'ok' }));
 
 app.route('/', exampleRouter);
 app.route('/', topicsRouter);
+app.route('/', datasetRouter);
 
 app.doc('/openapi.json', {
     openapi: '3.0.0',

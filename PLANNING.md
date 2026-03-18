@@ -43,7 +43,7 @@
 - retrieval
     - RAG?
         - most flexible
-    - tag-based?
+    - tag-based (chosen)
         - cheapest
         - can have a tree structure for easy filtering
         - subject, difficulty, type...
@@ -97,8 +97,7 @@
     - boolean
         - answer bool
     - matching
-        - left[]
-        - right[]
+        - pairs: { left_index, right_index }[] (objects mapping left items to right items)
 - exams
     - exam_id
     - student_id

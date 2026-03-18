@@ -54,6 +54,24 @@ async function insertSubtopics(
     }
 }
 
+export function buildTopicTreeText(allTopics: Topic[]): string {
+    const childrenMap = new Map<string | null, Topic[]>();
+    for (const t of allTopics) {
+        const key = t.parent_topic_id ?? null;
+        if (!childrenMap.has(key)) childrenMap.set(key, []);
+        childrenMap.get(key)!.push(t);
+    }
+
+    function renderNode(topic: Topic, depth: number): string {
+        const indent = '  '.repeat(depth);
+        const children = childrenMap.get(topic.topic_id) ?? [];
+        const childLines = children.map((c) => renderNode(c, depth + 1)).join('\n');
+        return `${indent}- ${topic.label}${childLines ? '\n' + childLines : ''}`;
+    }
+
+    return (childrenMap.get(null) ?? []).map((r) => renderNode(r, 0)).join('\n');
+}
+
 export async function generateTopics(context: string): Promise<void> {
     const existing = await listTopics();
     const existingLabels = existing.map((t) => t.label).join(', ');
