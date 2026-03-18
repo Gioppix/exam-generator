@@ -1,0 +1,1 @@
+{"openapi":"3.0.0","info":{"title":"Exam Generator","version":"1.0.0"},"components":{"schemas":{},"parameters":{}},"paths":{"/example/hello":{"get":{"responses":{"200":{"description":"Hello world","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"string","format":"uuid"},"message":{"type":"string"}},"required":["id","message"]}}}}}}}}}
