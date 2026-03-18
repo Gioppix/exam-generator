@@ -54,6 +54,24 @@ async function insertSubtopics(
     }
 }
 
+export function getDescendantTopicIds(rootId: string, allTopics: Topic[]): string[] {
+    const childrenMap = new Map<string, string[]>();
+    for (const t of allTopics) {
+        if (t.parent_topic_id) {
+            if (!childrenMap.has(t.parent_topic_id)) childrenMap.set(t.parent_topic_id, []);
+            childrenMap.get(t.parent_topic_id)!.push(t.topic_id);
+        }
+    }
+    const result: string[] = [];
+    const queue = [rootId];
+    while (queue.length > 0) {
+        const id = queue.shift()!;
+        result.push(id);
+        queue.push(...(childrenMap.get(id) ?? []));
+    }
+    return result;
+}
+
 export function buildTopicTreeText(allTopics: Topic[]): string {
     const childrenMap = new Map<string | null, Topic[]>();
     for (const t of allTopics) {
