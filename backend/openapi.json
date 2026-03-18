@@ -393,6 +393,94 @@
                     }
                 }
             }
+        },
+        "/auth/signup": {
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": { "username": { "type": "string", "minLength": 1 } },
+                                "required": ["username"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Student created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "student_id": { "type": "string", "format": "uuid" }
+                                    },
+                                    "required": ["student_id"]
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Username already taken",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": { "username": { "type": "string", "minLength": 1 } },
+                                "required": ["username"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "student_id": { "type": "string", "format": "uuid" }
+                                    },
+                                    "required": ["student_id"]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

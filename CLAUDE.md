@@ -10,3 +10,5 @@
     - try to use components as much as possible instead of reimplementing them from scratch
     - always use `resolve` from `$app/paths` for links
     - use `+page.ts`/`+layout.ts` for loading data whenever possible
+- backend
+    - always validate database outputs with Zod

@@ -3,7 +3,7 @@
     import * as Sidebar from '$lib/components/ui/sidebar/index.js';
     import { resolve } from '$app/paths';
 
-    let { children } = $props();
+    let { children, data } = $props();
 </script>
 
 <Sidebar.Provider class="h-dvh">
@@ -30,6 +30,46 @@
                                 {/snippet}
                             </Sidebar.MenuButton>
                         </Sidebar.MenuItem>
+                    </Sidebar.Menu>
+                </Sidebar.GroupContent>
+            </Sidebar.Group>
+            <Sidebar.Group>
+                <Sidebar.GroupLabel>Student</Sidebar.GroupLabel>
+                <Sidebar.GroupContent>
+                    <Sidebar.Menu>
+                        {#if !data.student_id}
+                            <Sidebar.MenuItem>
+                                <Sidebar.MenuButton>
+                                    {#snippet child({ props })}
+                                        <a href={resolve('/student/login')} {...props}>Login</a>
+                                    {/snippet}
+                                </Sidebar.MenuButton>
+                            </Sidebar.MenuItem>
+                            <Sidebar.MenuItem>
+                                <Sidebar.MenuButton>
+                                    {#snippet child({ props })}
+                                        <a href={resolve('/student/signup')} {...props}>Sign Up</a>
+                                    {/snippet}
+                                </Sidebar.MenuButton>
+                            </Sidebar.MenuItem>
+                        {:else}
+                            <Sidebar.MenuItem>
+                                <Sidebar.MenuButton>
+                                    {#snippet child({ props })}
+                                        <a href={resolve('/student/exams')} {...props}>Exams</a>
+                                    {/snippet}
+                                </Sidebar.MenuButton>
+                            </Sidebar.MenuItem>
+                            <Sidebar.MenuItem>
+                                <Sidebar.MenuButton>
+                                    {#snippet child({ props })}
+                                        <form method="POST" action={resolve('/student/logout')}>
+                                            <button type="submit" {...props}>Logout</button>
+                                        </form>
+                                    {/snippet}
+                                </Sidebar.MenuButton>
+                            </Sidebar.MenuItem>
+                        {/if}
                     </Sidebar.Menu>
                 </Sidebar.GroupContent>
             </Sidebar.Group>
