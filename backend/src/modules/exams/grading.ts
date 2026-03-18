@@ -4,6 +4,8 @@ import { generateObject } from 'ai';
 import { pool } from '../db.js';
 import { QuestionContentSchema, AnswerContentWithExplanationSchema } from '../questions/types.js';
 import { StudentAnswerContentSchema } from './types.js';
+import { getMe } from '../auth/index.js';
+import type { Student } from '../auth/types.js';
 
 // ─── Fetch questions for grading ─────────────────────────────────────────────
 
@@ -64,13 +66,23 @@ const OpenEndedGradeSchema = z.object({
 async function gradeOpenEnded(
     prompt: string,
     correctAnswer: string,
-    studentAnswer: string
+    studentAnswer: string,
+    student: Student | null
 ): Promise<{ grade: number; comment: string }> {
+    const studentContext = student
+        ? [
+              student.grade_level ? `Grade level: ${student.grade_level}` : null,
+              student.country ? `Country: ${student.country}` : null
+          ]
+              .filter(Boolean)
+              .join('\n')
+        : null;
+
     const { object } = await generateObject({
         model: openai('gpt-5.4'),
         schema: OpenEndedGradeSchema,
         prompt: `You are grading an open-ended exam question.
-
+${studentContext ? `\nStudent context:\n${studentContext}\n` : ''}
 Question: ${prompt}
 
 Correct answer: ${correctAnswer}
@@ -85,7 +97,16 @@ Grade the student's answer from 0 to 1 (0 = completely wrong, 0.5 = partially co
 // ─── Main grading entry point ─────────────────────────────────────────────────
 
 export async function gradeExam(exam_id: string): Promise<void> {
-    const questions = await fetchExamQuestionsForGrading(exam_id);
+    const { rows: examRows } = await pool.query<{ student_id: string }>(
+        'SELECT student_id FROM exams WHERE exam_id = $1',
+        [exam_id]
+    );
+    const student_id = examRows[0]?.student_id;
+
+    const [questions, student] = await Promise.all([
+        fetchExamQuestionsForGrading(exam_id),
+        student_id ? getMe(student_id) : Promise.resolve(null)
+    ]);
 
     const grades: { question_id: string; grade: number; comment: string | null }[] = [];
 
@@ -106,7 +127,8 @@ export async function gradeExam(exam_id: string): Promise<void> {
             const result = await gradeOpenEnded(
                 question.prompt,
                 correct_answer.answer,
-                student_answer.answer
+                student_answer.answer,
+                student
             );
             grade = result.grade;
             comment = result.comment;

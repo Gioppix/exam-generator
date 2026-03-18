@@ -4,6 +4,7 @@ import { generateObject } from 'ai';
 import { listQuestions } from '../questions/index.js';
 import { listTopics, buildTopicTreeText } from '../topics/index.js';
 import { createExam, insertExamQuestions } from './db.js';
+import { getMe } from '../auth/index.js';
 
 const QuestionSelectionSchema = z.object({
     exam_title: z
@@ -16,7 +17,11 @@ const QuestionSelectionSchema = z.object({
 
 // TODO: make this filter by topic and use tools
 export async function generateExam(prompt: string, student_id: string): Promise<string> {
-    const [questions, topics] = await Promise.all([listQuestions(), listTopics()]);
+    const [questions, topics, student] = await Promise.all([
+        listQuestions(),
+        listTopics(),
+        getMe(student_id)
+    ]);
 
     const activeQuestions = questions.filter((q) => q.active);
 
@@ -37,11 +42,20 @@ export async function generateExam(prompt: string, student_id: string): Promise<
         })
         .join('\n');
 
+    const studentContext = student
+        ? [
+              student.grade_level ? `Grade level: ${student.grade_level}` : null,
+              student.country ? `Country: ${student.country}` : null
+          ]
+              .filter(Boolean)
+              .join('\n')
+        : null;
+
     const { object } = await generateObject({
         model: openai('gpt-5.4'),
         schema: QuestionSelectionSchema,
         prompt: `You are building an exam based on this request: "${prompt}"
-
+${studentContext ? `\nStudent context:\n${studentContext}\n` : ''}
 Available topic tree:
 ${topicTreeText}
 

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { pool } from '../db.js';
-import { QuestionContentSchema, AnswerContentSchema } from '../questions/types.js';
+import {
+    QuestionContentSchema,
+    AnswerContentSchema,
+    AnswerContentWithExplanationSchema
+} from '../questions/types.js';
 import {
     ExamDetailSchema,
     ExamSummarySchema,
@@ -108,7 +112,7 @@ export async function getExam(exam_id: string): Promise<ExamDetail | null> {
         }),
         reported_at: toISO(r.reported_at),
         ...(isGraded && {
-            correct_answer: AnswerContentSchema.parse(r.correct_answer),
+            correct_answer: AnswerContentWithExplanationSchema.parse(r.correct_answer),
             grade: r.grade ?? null,
             grading_comment: r.grading_comment ?? null
         })

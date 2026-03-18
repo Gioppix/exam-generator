@@ -13,6 +13,8 @@
 
         <form method="POST" use:enhance class="space-y-4">
             <Input name="username" placeholder="Username" required />
+            <Input name="grade_level" placeholder="Grade Level (optional)" />
+            <Input name="country" placeholder="Country (optional)" />
             {#if form?.error}
                 <p class="text-sm text-destructive">{form.error}</p>
             {/if}

@@ -63,6 +63,13 @@
                             <Sidebar.MenuItem>
                                 <Sidebar.MenuButton>
                                     {#snippet child({ props })}
+                                        <a href={resolve('/student/me')} {...props}>Me</a>
+                                    {/snippet}
+                                </Sidebar.MenuButton>
+                            </Sidebar.MenuItem>
+                            <Sidebar.MenuItem>
+                                <Sidebar.MenuButton>
+                                    {#snippet child({ props })}
                                         <form method="POST" action={resolve('/student/logout')}>
                                             <button type="submit" {...props}>Logout</button>
                                         </form>

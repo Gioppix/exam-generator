@@ -208,19 +208,19 @@ export interface paths {
                                       /** @enum {string} */
                                       type: 'multiple_choice';
                                       selected_index: number[];
-                                      explanation?: string | null;
+                                      explanation: string | null;
                                   }
                                 | {
                                       /** @enum {string} */
                                       type: 'open_ended';
                                       answer: string;
-                                      explanation?: string | null;
+                                      explanation: string | null;
                                   }
                                 | {
                                       /** @enum {string} */
                                       type: 'boolean';
                                       answer: boolean;
-                                      explanation?: string | null;
+                                      explanation: string | null;
                                   }
                                 | {
                                       /** @enum {string} */
@@ -229,7 +229,7 @@ export interface paths {
                                           left_index: number;
                                           right_index: number;
                                       }[];
-                                      explanation?: string | null;
+                                      explanation: string | null;
                                   };
                             topic_ids: string[];
                         }[];
@@ -354,6 +354,8 @@ export interface paths {
                 content: {
                     'application/json': {
                         username: string;
+                        grade_level?: string;
+                        country?: string;
                     };
                 };
             };
@@ -383,6 +385,60 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/auth/me': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query: {
+                    student_id: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Student info */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            student_id: string;
+                            username: string;
+                            grade_level: string | null;
+                            country: string | null;
+                        };
+                    };
+                };
+                /** @description Student not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -633,19 +689,19 @@ export interface paths {
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
@@ -654,7 +710,7 @@ export interface paths {
                                               left_index: number;
                                               right_index: number;
                                           }[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;
@@ -779,19 +835,19 @@ export interface paths {
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
@@ -800,7 +856,7 @@ export interface paths {
                                               left_index: number;
                                               right_index: number;
                                           }[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;
@@ -1032,19 +1088,19 @@ export interface paths {
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       }
                                     | {
                                           /** @enum {string} */
@@ -1053,7 +1109,7 @@ export interface paths {
                                               left_index: number;
                                               right_index: number;
                                           }[];
-                                          explanation?: string | null;
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;

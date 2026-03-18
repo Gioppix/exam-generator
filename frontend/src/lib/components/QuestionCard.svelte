@@ -19,14 +19,7 @@
 </script>
 
 <div class="space-y-3 rounded-lg border bg-card p-4">
-    <div class="flex items-start justify-between gap-2">
-        <h3 class="leading-snug font-medium">{question.title}</h3>
-        <span
-            class="shrink-0 rounded-full border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-        >
-            {q.type}
-        </span>
-    </div>
+    <h3 class="leading-snug font-medium">{question.title}</h3>
 
     {#if topicLabels.length > 0}
         <div class="flex flex-wrap gap-1">

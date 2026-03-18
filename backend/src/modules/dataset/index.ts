@@ -41,7 +41,7 @@ For each question:
 - Provide a short title and a one-sentence description of what it should test and which type to use (multiple_choice, open_ended, boolean, or matching).
 - Assign topic_names using only labels from the tree above.
 - Choose the most specific (deepest) applicable topics. If you include a child topic, do NOT also include any of its ancestors.
-Generate 10 questions.`
+If the amount is not specified, generate 10 questions.`
     });
     return object.questions;
 }

@@ -203,7 +203,11 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "selected_index"]
+                                                        "required": [
+                                                            "type",
+                                                            "selected_index",
+                                                            "explanation"
+                                                        ]
                                                     },
                                                     {
                                                         "type": "object",
@@ -218,7 +222,11 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "answer"]
+                                                        "required": [
+                                                            "type",
+                                                            "answer",
+                                                            "explanation"
+                                                        ]
                                                     },
                                                     {
                                                         "type": "object",
@@ -233,7 +241,11 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "answer"]
+                                                        "required": [
+                                                            "type",
+                                                            "answer",
+                                                            "explanation"
+                                                        ]
                                                     },
                                                     {
                                                         "type": "object",
@@ -265,7 +277,7 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "pairs"]
+                                                        "required": ["type", "pairs", "explanation"]
                                                     }
                                                 ]
                                             },
@@ -369,7 +381,11 @@
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "properties": { "username": { "type": "string", "minLength": 1 } },
+                                "properties": {
+                                    "username": { "type": "string", "minLength": 1 },
+                                    "grade_level": { "type": "string" },
+                                    "country": { "type": "string" }
+                                },
                                 "required": ["username"]
                             }
                         }
@@ -392,6 +408,49 @@
                     },
                     "409": {
                         "description": "Username already taken",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "student_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Student info",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "student_id": { "type": "string", "format": "uuid" },
+                                        "username": { "type": "string" },
+                                        "grade_level": { "type": "string", "nullable": true },
+                                        "country": { "type": "string", "nullable": true }
+                                    },
+                                    "required": ["student_id", "username", "grade_level", "country"]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Student not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -754,7 +813,8 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index"
+                                                                    "selected_index",
+                                                                    "explanation"
                                                                 ]
                                                             },
                                                             {
@@ -770,7 +830,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -785,7 +849,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -817,7 +885,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "pairs"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
                                                             }
                                                         ]
                                                     },
@@ -1079,7 +1151,8 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index"
+                                                                    "selected_index",
+                                                                    "explanation"
                                                                 ]
                                                             },
                                                             {
@@ -1095,7 +1168,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1110,7 +1187,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1142,7 +1223,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "pairs"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
                                                             }
                                                         ]
                                                     },
@@ -1544,7 +1629,8 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index"
+                                                                    "selected_index",
+                                                                    "explanation"
                                                                 ]
                                                             },
                                                             {
@@ -1560,7 +1646,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1575,7 +1665,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "answer"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1607,7 +1701,11 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": ["type", "pairs"]
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
                                                             }
                                                         ]
                                                     },

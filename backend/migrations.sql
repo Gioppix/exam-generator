@@ -13,6 +13,7 @@ CREATE TABLE students
     country     text
 );
 
+
 -- no deletes on this table; updates are limited to `active` column
 CREATE TABLE questions
 (
@@ -52,3 +53,8 @@ CREATE TABLE exam_questions
     grading_comment text,
     PRIMARY KEY (exam_id, question_id)
 );
+
+-- FIXTURES
+
+INSERT INTO students (student_id, username, grade_level, country)
+VALUES ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'boss', 'Elementary school', 'Italy (English)');
