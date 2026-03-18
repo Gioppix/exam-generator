@@ -1,4 +1,7 @@
 <script lang="ts">
+    import { invalidate } from '$app/navigation';
+    import { api } from '$lib/api';
+    import { ThumbsDown } from '@lucide/svelte';
     import type { Writable } from 'svelte/store';
     import type { paths } from '../../../../../types/api';
     import type { Answer } from './+page.js';
@@ -9,16 +12,32 @@
     let {
         q,
         index,
+        examId,
         answerWritable,
         active,
         isDone
     }: {
         q: ApiQuestion;
         index: number;
+        examId: string;
         answerWritable: Writable<Answer | null>;
         active: boolean;
         isDone: boolean;
     } = $props();
+
+    let reporting = $state(false);
+
+    async function reportQuestion() {
+        reporting = true;
+        try {
+            const { error } = await api.POST('/exams/{id}/report/{questionId}', {
+                params: { path: { id: examId, questionId: q.question_id } }
+            });
+            if (!error) await invalidate('app:exam');
+        } finally {
+            reporting = false;
+        }
+    }
 
     const qc = $derived(q.question);
 
@@ -65,16 +84,24 @@
     }
 </script>
 
-<div class="space-y-3 rounded-lg border bg-card p-4">
+<div class="group space-y-3 rounded-lg border bg-card p-4">
     <div class="flex items-start justify-between gap-2">
         <p class="text-sm leading-snug font-medium">
             <span class="mr-2 text-muted-foreground">{index + 1}.</span>{qc.prompt}
         </p>
-        <span
-            class="shrink-0 rounded-full border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-        >
-            {qc.type}
-        </span>
+        <div class="flex shrink-0 items-center gap-2">
+            <button
+                onclick={reportQuestion}
+                disabled={reporting || !!q.reported_at}
+                class="rounded p-1 transition-colors
+                    {q.reported_at
+                    ? 'cursor-not-allowed text-destructive opacity-50'
+                    : 'text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-destructive'}"
+                title={q.reported_at ? 'Already reported' : 'Report question'}
+            >
+                <ThumbsDown class="h-3.5 w-3.5" />
+            </button>
+        </div>
     </div>
 
     <!-- Multiple choice -->

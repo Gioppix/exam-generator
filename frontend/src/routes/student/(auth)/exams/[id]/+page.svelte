@@ -90,6 +90,7 @@
                 <ExamQuestion
                     {q}
                     index={i}
+                    examId={exam.exam_id}
                     answerWritable={data.answers[q.question_id]}
                     active={isActive}
                     {isDone}
