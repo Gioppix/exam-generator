@@ -42,9 +42,7 @@ function createSelectQuestionsTool(result: SelectionResult) {
             exam_title: z
                 .string()
                 .describe('A short, descriptive exam title (e.g. "Quadratic Equations Quiz")'),
-            selected_question_ids: z
-                .array(z.string())
-                .describe('IDs of questions to include. Select 5–15 questions.')
+            selected_question_ids: z.array(z.string()).describe('IDs of questions to include')
         }),
         execute: async ({ exam_title, selected_question_ids }) => {
             result.exam_title = exam_title;
