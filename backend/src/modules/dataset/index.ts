@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
 import type { Topic } from '../topics/types.js';
-import { QuestionContentSchema, AnswerContentSchema } from '../questions/types.js';
+import { QuestionContentSchema, AnswerContentWithExplanationSchema } from '../questions/types.js';
 import { insertQuestion } from './db.js';
 
 export const OutlineSchema = z.object({
@@ -20,7 +20,7 @@ export type Outline = z.infer<typeof OutlineSchema>;
 
 export const FullQuestionSchema = z.object({
     question: QuestionContentSchema,
-    answer: AnswerContentSchema
+    answer: AnswerContentWithExplanationSchema
 });
 
 export async function generateOutlines(

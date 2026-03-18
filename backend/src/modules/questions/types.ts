@@ -37,24 +37,22 @@ export type QuestionContent = z.infer<typeof QuestionContentSchema>;
 // ─── Answer content (stored in `answer` jsonb column) ───────────────────────
 // For matching, left[i] correctly pairs with right[i].
 
-const AnswerBaseSchema = z.object({ explanation: z.string().nullable() });
-
-export const MultipleChoiceAnswerSchema = AnswerBaseSchema.extend({
+export const MultipleChoiceAnswerSchema = z.object({
     type: z.literal('multiple_choice'),
     selected_index: z.array(z.number())
 });
 
-export const OpenEndedAnswerSchema = AnswerBaseSchema.extend({
+export const OpenEndedAnswerSchema = z.object({
     type: z.literal('open_ended'),
     answer: z.string()
 });
 
-export const BooleanAnswerSchema = AnswerBaseSchema.extend({
+export const BooleanAnswerSchema = z.object({
     type: z.literal('boolean'),
     answer: z.boolean()
 });
 
-export const MatchingAnswerSchema = AnswerBaseSchema.extend({
+export const MatchingAnswerSchema = z.object({
     type: z.literal('matching'),
     // Each pair indicates which left item matches which right item
     pairs: z.array(z.object({ left_index: z.number(), right_index: z.number() }))
@@ -69,6 +67,17 @@ export const AnswerContentSchema = z.union([
 
 export type AnswerContent = z.infer<typeof AnswerContentSchema>;
 
+const explanation = { explanation: z.string().nullable() };
+
+export const AnswerContentWithExplanationSchema = z.union([
+    MultipleChoiceAnswerSchema.extend(explanation),
+    OpenEndedAnswerSchema.extend(explanation),
+    BooleanAnswerSchema.extend(explanation),
+    MatchingAnswerSchema.extend(explanation)
+]);
+
+export type AnswerContentWithExplanation = z.infer<typeof AnswerContentWithExplanationSchema>;
+
 // ─── Full question row ───────────────────────────────────────────────────────
 
 export const QuestionSchema = z.object({
@@ -76,7 +85,7 @@ export const QuestionSchema = z.object({
     active: z.boolean(),
     title: z.string(),
     question: QuestionContentSchema,
-    answer: AnswerContentSchema,
+    answer: AnswerContentWithExplanationSchema,
     topic_ids: z.array(z.string().uuid())
 });
 

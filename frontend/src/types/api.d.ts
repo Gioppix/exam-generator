@@ -205,31 +205,31 @@ export interface paths {
                                   };
                             answer:
                                 | {
-                                      explanation: string | null;
                                       /** @enum {string} */
                                       type: 'multiple_choice';
                                       selected_index: number[];
+                                      explanation: string | null;
                                   }
                                 | {
-                                      explanation: string | null;
                                       /** @enum {string} */
                                       type: 'open_ended';
                                       answer: string;
+                                      explanation: string | null;
                                   }
                                 | {
-                                      explanation: string | null;
                                       /** @enum {string} */
                                       type: 'boolean';
                                       answer: boolean;
+                                      explanation: string | null;
                                   }
                                 | {
-                                      explanation: string | null;
                                       /** @enum {string} */
                                       type: 'matching';
                                       pairs: {
                                           left_index: number;
                                           right_index: number;
                                       }[];
+                                      explanation: string | null;
                                   };
                             topic_ids: string[];
                         }[];
@@ -630,31 +630,31 @@ export interface paths {
                                 reported_at: string | null;
                                 correct_answer?:
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'matching';
                                           pairs: {
                                               left_index: number;
                                               right_index: number;
                                           }[];
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;
@@ -776,31 +776,31 @@ export interface paths {
                                 reported_at: string | null;
                                 correct_answer?:
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'matching';
                                           pairs: {
                                               left_index: number;
                                               right_index: number;
                                           }[];
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;
@@ -1029,31 +1029,31 @@ export interface paths {
                                 reported_at: string | null;
                                 correct_answer?:
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'multiple_choice';
                                           selected_index: number[];
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'open_ended';
                                           answer: string;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'boolean';
                                           answer: boolean;
+                                          explanation: string | null;
                                       }
                                     | {
-                                          explanation: string | null;
                                           /** @enum {string} */
                                           type: 'matching';
                                           pairs: {
                                               left_index: number;
                                               right_index: number;
                                           }[];
+                                          explanation: string | null;
                                       };
                                 grade?: number | null;
                                 grading_comment?: string | null;

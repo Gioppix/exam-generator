@@ -1,36 +1,12 @@
 import { z } from 'zod';
-import { QuestionContentSchema, AnswerContentSchema } from '../questions/types.js';
+import {
+    QuestionContentSchema,
+    AnswerContentSchema,
+    AnswerContentWithExplanationSchema
+} from '../questions/types.js';
 
-// ─── Student-submitted answers (no explanation field) ────────────────────────
-
-export const StudentMultipleChoiceAnswerSchema = z.object({
-    type: z.literal('multiple_choice'),
-    selected_index: z.array(z.number())
-});
-
-export const StudentOpenEndedAnswerSchema = z.object({
-    type: z.literal('open_ended'),
-    answer: z.string()
-});
-
-export const StudentBooleanAnswerSchema = z.object({
-    type: z.literal('boolean'),
-    answer: z.boolean()
-});
-
-export const StudentMatchingAnswerSchema = z.object({
-    type: z.literal('matching'),
-    pairs: z.array(z.object({ left_index: z.number(), right_index: z.number() }))
-});
-
-export const StudentAnswerContentSchema = z.union([
-    StudentMultipleChoiceAnswerSchema,
-    StudentOpenEndedAnswerSchema,
-    StudentBooleanAnswerSchema,
-    StudentMatchingAnswerSchema
-]);
-
-export type StudentAnswerContent = z.infer<typeof StudentAnswerContentSchema>;
+export { AnswerContentSchema as StudentAnswerContentSchema };
+export type StudentAnswerContent = z.infer<typeof AnswerContentSchema>;
 
 // ─── Exam status ─────────────────────────────────────────────────────────────
 
@@ -42,25 +18,17 @@ export type ExamStatus = z.infer<typeof ExamStatusSchema>;
 export const ExamQuestionSchema = z.object({
     question_id: z.string().uuid(),
     question: QuestionContentSchema,
-    student_answer: z
-        .union([
-            StudentMultipleChoiceAnswerSchema,
-            StudentOpenEndedAnswerSchema,
-            StudentBooleanAnswerSchema,
-            StudentMatchingAnswerSchema
-        ])
-        .optional(),
+    student_answer: AnswerContentSchema.optional(),
     reported_at: z.string().nullable(),
-    // Only included when graded:
-    correct_answer: AnswerContentSchema.optional(),
+    /** Only included when graded */
+    correct_answer: AnswerContentWithExplanationSchema.optional(),
     grade: z.number().nullable().optional(),
     grading_comment: z.string().nullable().optional()
 });
 
 export type ExamQuestion = z.infer<typeof ExamQuestionSchema>;
 
-// ─── Full exam detail (includes questions) ────────────────────────────────────
-
+/** Full exam detail (includes questions) */
 export const ExamDetailSchema = z.object({
     exam_id: z.string().uuid(),
     exam_title: z.string(),
@@ -102,7 +70,7 @@ export const CreateExamBodySchema = z.object({
 export type CreateExamBody = z.infer<typeof CreateExamBodySchema>;
 
 export const SubmitAnswerBodySchema = z.object({
-    answer: z.union([StudentAnswerContentSchema]).optional()
+    answer: AnswerContentSchema.optional()
 });
 
 export type SubmitAnswerBody = z.infer<typeof SubmitAnswerBodySchema>;
