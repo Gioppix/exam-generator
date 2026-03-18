@@ -14,12 +14,17 @@
 ## Dataset Generation
 
 - generate topics
+    - AI + ui
 - generate questions
     - how to avoid duplicates?
+        - for now, just pass all of the existing titles to the LLM
+        - in the future, filter by topic (LLM only gets that specific topic of questions)
     - initial difficulty?
         - will later be calculated based on the completion rate
+        - ignore for now
 - generate solutions?
     - yes: faster, cheaper, high quality
+        - chosen for this demo; open ended questions cannot be generated
     - no: more personalized
     - hybrid
 - generate explanations?

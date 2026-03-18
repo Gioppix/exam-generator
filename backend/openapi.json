@@ -1,1 +1,130 @@
-{"openapi":"3.0.0","info":{"title":"Exam Generator","version":"1.0.0"},"components":{"schemas":{},"parameters":{}},"paths":{"/example/hello":{"get":{"responses":{"200":{"description":"Hello world","content":{"application/json":{"schema":{"type":"object","properties":{"id":{"type":"string","format":"uuid"},"message":{"type":"string"}},"required":["id","message"]}}}}}}}}}
+{
+    "openapi": "3.0.0",
+    "info": { "title": "Exam Generator", "version": "1.0.0" },
+    "components": { "schemas": {}, "parameters": {} },
+    "paths": {
+        "/example/hello": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Hello world",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string", "format": "uuid" },
+                                        "message": { "type": "string" }
+                                    },
+                                    "required": ["id", "message"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/topics": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "List all topics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "topic_id": { "type": "string", "format": "uuid" },
+                                            "parent_topic_id": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "format": "uuid"
+                                            },
+                                            "label": { "type": "string" }
+                                        },
+                                        "required": ["topic_id", "parent_topic_id", "label"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "label": { "type": "string", "minLength": 1 },
+                                    "parent_topic_id": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "format": "uuid"
+                                    }
+                                },
+                                "required": ["label"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created topic",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "topic_id": { "type": "string", "format": "uuid" },
+                                        "parent_topic_id": {
+                                            "type": "string",
+                                            "nullable": true,
+                                            "format": "uuid"
+                                        },
+                                        "label": { "type": "string" }
+                                    },
+                                    "required": ["topic_id", "parent_topic_id", "label"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/topics/generate": {
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": { "context": { "type": "string", "minLength": 1 } },
+                                "required": ["context"]
+                            }
+                        }
+                    }
+                },
+                "responses": { "204": { "description": "Topics generated and inserted" } }
+            }
+        },
+        "/admin/topics/{id}": {
+            "delete": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": { "204": { "description": "Topic deleted" } }
+            }
+        }
+    }
+}

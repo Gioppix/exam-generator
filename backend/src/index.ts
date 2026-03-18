@@ -3,6 +3,7 @@ import { serve } from '@hono/node-server';
 import { cors } from 'hono/cors';
 import { fileURLToPath } from 'url';
 import exampleRouter from './routers/example.js';
+import topicsRouter from './routers/topics.js';
 
 const app = new OpenAPIHono();
 
@@ -19,6 +20,7 @@ if (ARTIFICIAL_DELAY_MS > 0) {
 app.get('/health', (c) => c.json({ status: 'ok' }));
 
 app.route('/', exampleRouter);
+app.route('/', topicsRouter);
 
 app.doc('/openapi.json', {
     openapi: '3.0.0',

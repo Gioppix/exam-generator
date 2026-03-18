@@ -12,8 +12,10 @@
         "db:dev": "source .env && psql $DATABASE_URL -c \"DROP SCHEMA public CASCADE\" && psql $DATABASE_URL -c \"CREATE SCHEMA public\" && psql $DATABASE_URL -f migrations.sql"
     },
     "dependencies": {
+        "@ai-sdk/openai": "^3.0.41",
         "@hono/node-server": "^1.19.11",
         "@hono/zod-openapi": "^1.2.2",
+        "ai": "^6.0.116",
         "hono": "^4.12.7",
         "pg": "^8.13.3",
         "zod": "^4.3.6"
