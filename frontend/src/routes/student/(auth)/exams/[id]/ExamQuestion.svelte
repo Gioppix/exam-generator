@@ -1,11 +1,12 @@
 <script lang="ts">
     import { invalidate } from '$app/navigation';
     import { api } from '$lib/api';
-    import { ThumbsDown } from '@lucide/svelte';
+    import { ThumbsDown, GripVertical } from '@lucide/svelte';
     import type { Writable } from 'svelte/store';
     import type { paths } from '../../../../../types/api';
     import type { Answer } from './+page.js';
     import { gradeColors } from '$lib/utils';
+    import { scale } from 'svelte/transition';
 
     type ApiQuestion =
         paths['/exams/{id}']['get']['responses'][200]['content']['application/json']['questions'][number];
@@ -27,6 +28,8 @@
     } = $props();
 
     let reporting = $state(false);
+    let dragSourceLeft = $state<number | null>(null);
+    let dragOverLeft = $state<number | null>(null);
 
     async function reportQuestion() {
         reporting = true;
@@ -80,6 +83,35 @@
                         ? { left_index: leftIndex, right_index: rightIndex }
                         : p
                 )
+            };
+        });
+    }
+
+    function handleMatchingDrop(targetLeftIndex: number) {
+        const srcIdx = dragSourceLeft;
+        dragSourceLeft = null;
+        dragOverLeft = null;
+        if (srcIdx === null || srcIdx === targetLeftIndex) return;
+        if (q.question.type !== 'matching') return;
+        const leftCount = q.question.left.length;
+        answerWritable.update((a) => {
+            const pairs =
+                a?.type === 'matching'
+                    ? [...a.pairs]
+                    : Array.from({ length: leftCount }, (_: unknown, i: number) => ({
+                          left_index: i,
+                          right_index: i
+                      }));
+            const srcRight = pairs.find((p) => p.left_index === srcIdx)?.right_index ?? srcIdx;
+            const tgtRight =
+                pairs.find((p) => p.left_index === targetLeftIndex)?.right_index ?? targetLeftIndex;
+            return {
+                type: 'matching',
+                pairs: pairs.map((p) => {
+                    if (p.left_index === srcIdx) return { ...p, right_index: tgtRight };
+                    if (p.left_index === targetLeftIndex) return { ...p, right_index: srcRight };
+                    return p;
+                })
             };
         });
     }
@@ -231,7 +263,7 @@
 
         <!-- Matching -->
     {:else if qc.type === 'matching'}
-        <div class="space-y-2">
+        <div class="space-y-1.5">
             {#each qc.left as leftItem, li (li)}
                 {@const currentRight =
                     $answerWritable?.type === 'matching'
@@ -246,23 +278,64 @@
                         : undefined}
                 {@const isCorrectMatch =
                     correctRight !== undefined && currentRight === correctRight}
-                <div class="flex items-center gap-3 text-sm">
-                    <span class="flex-1 rounded bg-muted px-2 py-1">{leftItem}</span>
-                    <span class="text-muted-foreground">→</span>
+                {@const isSource = dragSourceLeft === li}
+                {@const isTarget =
+                    dragOverLeft === li && dragSourceLeft !== null && dragSourceLeft !== li}
+                <div
+                    class="flex items-center gap-2 text-sm"
+                    role="listitem"
+                    ondragover={(e) => {
+                        e.preventDefault();
+                        if (dragSourceLeft !== null) dragOverLeft = li;
+                    }}
+                    ondrop={() => handleMatchingDrop(li)}
+                    ondragleave={(e) => {
+                        if (
+                            !(e.currentTarget as HTMLElement).contains(
+                                e.relatedTarget as Node | null
+                            )
+                        ) {
+                            if (dragOverLeft === li) dragOverLeft = null;
+                        }
+                    }}
+                >
+                    <span class="w-[45%] shrink-0 rounded bg-muted px-2 py-1.5 text-sm leading-snug"
+                        >{leftItem}</span
+                    >
+                    <span class="shrink-0 text-xs text-muted-foreground">→</span>
                     {#if active}
-                        <select
-                            class="flex-1 rounded border bg-background px-2 py-1 text-sm"
-                            value={currentRight}
-                            onchange={(e) =>
-                                setMatchingPair(li, Number((e.target as HTMLSelectElement).value))}
+                        <div
+                            draggable="true"
+                            ondragstart={(e) => {
+                                dragSourceLeft = li;
+                                if (e.dataTransfer) {
+                                    e.dataTransfer.effectAllowed = 'move';
+                                    e.dataTransfer.setData('text/plain', String(li));
+                                }
+                            }}
+                            ondragend={() => {
+                                dragSourceLeft = null;
+                                dragOverLeft = null;
+                            }}
+                            class="flex w-[45%] cursor-grab items-center gap-1.5 rounded border px-2 py-1.5 text-sm leading-snug transition-all duration-150 select-none
+                                {isSource
+                                ? 'border-dashed opacity-30'
+                                : isTarget
+                                  ? 'scale-[1.03] border-blue-400 bg-blue-50 ring-2 ring-blue-300 dark:bg-blue-950'
+                                  : 'bg-background hover:border-border hover:bg-muted'}"
+                            role="button"
+                            tabindex="0"
                         >
-                            {#each qc.right as rightItem, ri (ri)}
-                                <option value={ri}>{rightItem}</option>
-                            {/each}
-                        </select>
+                            <GripVertical class="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                            {#key currentRight}
+                                <span in:scale={{ duration: 180, start: 0.85 }}>
+                                    {qc.right[currentRight]}
+                                </span>
+                            {/key}
+                        </div>
                     {:else}
                         <span
-                            class="flex-1 rounded px-2 py-1
+                            class="w-[45%] rounded px-2 py-1.5 text-sm leading-snug
                                 {isDone && correctRight !== undefined
                                 ? isCorrectMatch
                                     ? 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300'
@@ -275,6 +348,9 @@
                 </div>
             {/each}
         </div>
+        {#if active}
+            <p class="text-xs text-muted-foreground">Drag the right-side answers to swap matches</p>
+        {/if}
     {/if}
 
     <!-- Explanation -->
