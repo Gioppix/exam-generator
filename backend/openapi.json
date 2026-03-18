@@ -481,6 +481,1244 @@
                     }
                 }
             }
+        },
+        "/exams/create": {
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "prompt": { "type": "string", "minLength": 1 },
+                                    "student_id": { "type": "string", "format": "uuid" }
+                                },
+                                "required": ["prompt", "student_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Exam created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "exam_id": { "type": "string", "format": "uuid" }
+                                    },
+                                    "required": ["exam_id"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams": {
+            "get": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "student_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List exams for student",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "exam_id": { "type": "string", "format": "uuid" },
+                                            "created_at": { "type": "string" },
+                                            "started_at": { "type": "string", "nullable": true },
+                                            "submitted_at": { "type": "string", "nullable": true },
+                                            "graded_at": { "type": "string", "nullable": true },
+                                            "grade": { "type": "number", "nullable": true },
+                                            "status": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "created",
+                                                    "started",
+                                                    "submitted",
+                                                    "graded"
+                                                ]
+                                            },
+                                            "question_count": { "type": "number" }
+                                        },
+                                        "required": [
+                                            "exam_id",
+                                            "created_at",
+                                            "started_at",
+                                            "submitted_at",
+                                            "graded_at",
+                                            "grade",
+                                            "status",
+                                            "question_count"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exam detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "exam_id": { "type": "string", "format": "uuid" },
+                                        "student_id": { "type": "string", "format": "uuid" },
+                                        "created_at": { "type": "string" },
+                                        "started_at": { "type": "string", "nullable": true },
+                                        "submitted_at": { "type": "string", "nullable": true },
+                                        "graded_at": { "type": "string", "nullable": true },
+                                        "grade": { "type": "number", "nullable": true },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": ["created", "started", "submitted", "graded"]
+                                        },
+                                        "questions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "question_id": {
+                                                        "type": "string",
+                                                        "format": "uuid"
+                                                    },
+                                                    "question": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "answers": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "answers"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "left": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "right": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "left",
+                                                                    "right"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "student_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": ["type", "pairs"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "reported_at": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "correct_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "grade": { "type": "number", "nullable": true },
+                                                    "grading_comment": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "required": [
+                                                    "question_id",
+                                                    "question",
+                                                    "reported_at"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "exam_id",
+                                        "student_id",
+                                        "created_at",
+                                        "started_at",
+                                        "submitted_at",
+                                        "graded_at",
+                                        "grade",
+                                        "status",
+                                        "questions"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Exam not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{id}/start": {
+            "post": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exam started",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "exam_id": { "type": "string", "format": "uuid" },
+                                        "student_id": { "type": "string", "format": "uuid" },
+                                        "created_at": { "type": "string" },
+                                        "started_at": { "type": "string", "nullable": true },
+                                        "submitted_at": { "type": "string", "nullable": true },
+                                        "graded_at": { "type": "string", "nullable": true },
+                                        "grade": { "type": "number", "nullable": true },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": ["created", "started", "submitted", "graded"]
+                                        },
+                                        "questions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "question_id": {
+                                                        "type": "string",
+                                                        "format": "uuid"
+                                                    },
+                                                    "question": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "answers": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "answers"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "left": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "right": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "left",
+                                                                    "right"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "student_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": ["type", "pairs"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "reported_at": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "correct_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "grade": { "type": "number", "nullable": true },
+                                                    "grading_comment": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "required": [
+                                                    "question_id",
+                                                    "question",
+                                                    "reported_at"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "exam_id",
+                                        "student_id",
+                                        "created_at",
+                                        "started_at",
+                                        "submitted_at",
+                                        "graded_at",
+                                        "grade",
+                                        "status",
+                                        "questions"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Exam not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{id}/submit-answer/{questionId}": {
+            "post": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "questionId",
+                        "in": "path"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "answer": {
+                                        "anyOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["multiple_choice"]
+                                                    },
+                                                    "selected_index": {
+                                                        "type": "array",
+                                                        "items": { "type": "number" }
+                                                    }
+                                                },
+                                                "required": ["type", "selected_index"]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["open_ended"]
+                                                    },
+                                                    "answer": { "type": "string" }
+                                                },
+                                                "required": ["type", "answer"]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["boolean"]
+                                                    },
+                                                    "answer": { "type": "boolean" }
+                                                },
+                                                "required": ["type", "answer"]
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "type": {
+                                                        "type": "string",
+                                                        "enum": ["matching"]
+                                                    },
+                                                    "pairs": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "left_index": { "type": "number" },
+                                                                "right_index": { "type": "number" }
+                                                            },
+                                                            "required": [
+                                                                "left_index",
+                                                                "right_index"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "required": ["type", "pairs"]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Answer submitted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "ok": { "type": "boolean" } },
+                                    "required": ["ok"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{id}/report/{questionId}": {
+            "post": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    },
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "questionId",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Question reported",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "ok": { "type": "boolean" } },
+                                    "required": ["ok"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/exams/{id}/grade": {
+            "post": {
+                "parameters": [
+                    {
+                        "schema": { "type": "string", "format": "uuid" },
+                        "required": true,
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exam submitted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "exam_id": { "type": "string", "format": "uuid" },
+                                        "student_id": { "type": "string", "format": "uuid" },
+                                        "created_at": { "type": "string" },
+                                        "started_at": { "type": "string", "nullable": true },
+                                        "submitted_at": { "type": "string", "nullable": true },
+                                        "graded_at": { "type": "string", "nullable": true },
+                                        "grade": { "type": "number", "nullable": true },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": ["created", "started", "submitted", "graded"]
+                                        },
+                                        "questions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "question_id": {
+                                                        "type": "string",
+                                                        "format": "uuid"
+                                                    },
+                                                    "question": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "answers": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "answers"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "prompt": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "prompt"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "prompt": { "type": "string" },
+                                                                    "left": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "right": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "prompt",
+                                                                    "left",
+                                                                    "right"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "student_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" }
+                                                                },
+                                                                "required": ["type", "answer"]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "required": ["type", "pairs"]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "reported_at": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    },
+                                                    "correct_answer": {
+                                                        "anyOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["multiple_choice"]
+                                                                    },
+                                                                    "selected_index": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "number"
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "selected_index",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["open_ended"]
+                                                                    },
+                                                                    "answer": { "type": "string" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["boolean"]
+                                                                    },
+                                                                    "answer": { "type": "boolean" },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "answer",
+                                                                    "explanation"
+                                                                ]
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "type": {
+                                                                        "type": "string",
+                                                                        "enum": ["matching"]
+                                                                    },
+                                                                    "pairs": {
+                                                                        "type": "array",
+                                                                        "items": {
+                                                                            "type": "object",
+                                                                            "properties": {
+                                                                                "left_index": {
+                                                                                    "type": "number"
+                                                                                },
+                                                                                "right_index": {
+                                                                                    "type": "number"
+                                                                                }
+                                                                            },
+                                                                            "required": [
+                                                                                "left_index",
+                                                                                "right_index"
+                                                                            ]
+                                                                        }
+                                                                    },
+                                                                    "explanation": {
+                                                                        "type": "string",
+                                                                        "nullable": true
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "type",
+                                                                    "pairs",
+                                                                    "explanation"
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    "grade": { "type": "number", "nullable": true },
+                                                    "grading_comment": {
+                                                        "type": "string",
+                                                        "nullable": true
+                                                    }
+                                                },
+                                                "required": [
+                                                    "question_id",
+                                                    "question",
+                                                    "reported_at"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "exam_id",
+                                        "student_id",
+                                        "created_at",
+                                        "started_at",
+                                        "submitted_at",
+                                        "graded_at",
+                                        "grade",
+                                        "status",
+                                        "questions"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Exam not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": { "error": { "type": "string" } },
+                                    "required": ["error"]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

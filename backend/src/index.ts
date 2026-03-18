@@ -6,6 +6,7 @@ import exampleRouter from './routers/example.js';
 import topicsRouter from './routers/topics.js';
 import datasetRouter from './routers/dataset.js';
 import authRouter from './routers/auth.js';
+import examsRouter from './routers/exams.js';
 
 const app = new OpenAPIHono();
 
@@ -25,6 +26,7 @@ app.route('/', exampleRouter);
 app.route('/', topicsRouter);
 app.route('/', datasetRouter);
 app.route('/', authRouter);
+app.route('/', examsRouter);
 
 app.doc('/openapi.json', {
     openapi: '3.0.0',

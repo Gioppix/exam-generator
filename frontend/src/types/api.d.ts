@@ -483,6 +483,638 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    '/exams/create': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    'application/json': {
+                        prompt: string;
+                        /** Format: uuid */
+                        student_id: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Exam created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            exam_id: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query: {
+                    student_id: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description List exams for student */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            exam_id: string;
+                            created_at: string;
+                            started_at: string | null;
+                            submitted_at: string | null;
+                            graded_at: string | null;
+                            grade: number | null;
+                            /** @enum {string} */
+                            status: 'created' | 'started' | 'submitted' | 'graded';
+                            question_count: number;
+                        }[];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams/{id}': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Exam detail */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            exam_id: string;
+                            /** Format: uuid */
+                            student_id: string;
+                            created_at: string;
+                            started_at: string | null;
+                            submitted_at: string | null;
+                            graded_at: string | null;
+                            grade: number | null;
+                            /** @enum {string} */
+                            status: 'created' | 'started' | 'submitted' | 'graded';
+                            questions: {
+                                /** Format: uuid */
+                                question_id: string;
+                                question:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          prompt: string;
+                                          answers: string[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          prompt: string;
+                                          left: string[];
+                                          right: string[];
+                                      };
+                                student_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                      };
+                                reported_at: string | null;
+                                correct_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                          explanation: string | null;
+                                      };
+                                grade?: number | null;
+                                grading_comment?: string | null;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Exam not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams/{id}/start': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Exam started */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            exam_id: string;
+                            /** Format: uuid */
+                            student_id: string;
+                            created_at: string;
+                            started_at: string | null;
+                            submitted_at: string | null;
+                            graded_at: string | null;
+                            grade: number | null;
+                            /** @enum {string} */
+                            status: 'created' | 'started' | 'submitted' | 'graded';
+                            questions: {
+                                /** Format: uuid */
+                                question_id: string;
+                                question:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          prompt: string;
+                                          answers: string[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          prompt: string;
+                                          left: string[];
+                                          right: string[];
+                                      };
+                                student_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                      };
+                                reported_at: string | null;
+                                correct_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                          explanation: string | null;
+                                      };
+                                grade?: number | null;
+                                grading_comment?: string | null;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Exam not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams/{id}/submit-answer/{questionId}': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                    questionId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    'application/json': {
+                        answer?:
+                            | {
+                                  /** @enum {string} */
+                                  type: 'multiple_choice';
+                                  selected_index: number[];
+                              }
+                            | {
+                                  /** @enum {string} */
+                                  type: 'open_ended';
+                                  answer: string;
+                              }
+                            | {
+                                  /** @enum {string} */
+                                  type: 'boolean';
+                                  answer: boolean;
+                              }
+                            | {
+                                  /** @enum {string} */
+                                  type: 'matching';
+                                  pairs: {
+                                      left_index: number;
+                                      right_index: number;
+                                  }[];
+                              };
+                    };
+                };
+            };
+            responses: {
+                /** @description Answer submitted */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            ok: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams/{id}/report/{questionId}': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                    questionId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Question reported */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            ok: boolean;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    '/exams/{id}/grade': {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Exam submitted */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            /** Format: uuid */
+                            exam_id: string;
+                            /** Format: uuid */
+                            student_id: string;
+                            created_at: string;
+                            started_at: string | null;
+                            submitted_at: string | null;
+                            graded_at: string | null;
+                            grade: number | null;
+                            /** @enum {string} */
+                            status: 'created' | 'started' | 'submitted' | 'graded';
+                            questions: {
+                                /** Format: uuid */
+                                question_id: string;
+                                question:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          prompt: string;
+                                          answers: string[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          prompt: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          prompt: string;
+                                          left: string[];
+                                          right: string[];
+                                      };
+                                student_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                      };
+                                reported_at: string | null;
+                                correct_answer?:
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'multiple_choice';
+                                          selected_index: number[];
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'open_ended';
+                                          answer: string;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'boolean';
+                                          answer: boolean;
+                                          explanation: string | null;
+                                      }
+                                    | {
+                                          /** @enum {string} */
+                                          type: 'matching';
+                                          pairs: {
+                                              left_index: number;
+                                              right_index: number;
+                                          }[];
+                                          explanation: string | null;
+                                      };
+                                grade?: number | null;
+                                grading_comment?: string | null;
+                            }[];
+                        };
+                    };
+                };
+                /** @description Exam not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        'application/json': {
+                            error: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
