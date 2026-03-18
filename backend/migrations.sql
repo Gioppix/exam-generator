@@ -46,7 +46,7 @@ CREATE TABLE exam_questions
     exam_id         uuid NOT NULL REFERENCES exams (exam_id),
     question_id     uuid NOT NULL REFERENCES questions (question_id),
     reported_at     timestamptz, -- if the student thinks the question is "bad" and decides to report it
-    answer          jsonb,
+    answer          jsonb, -- student's answer
     grade           float CHECK (grade BETWEEN 0 AND 1),
     grading_comment text,
     PRIMARY KEY (exam_id, question_id)
