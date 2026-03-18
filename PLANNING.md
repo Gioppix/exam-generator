@@ -1,0 +1,155 @@
+## Demo Day
+
+- no slides, raw demo
+- 1/2 subjects for dataset
+    - don't spend too much time
+- test generation
+    - positive, negative filters
+    - amount of questions
+- question + answers with explanation
+- focus on ai generation + retrieval
+- additional things that can be useful
+    - history of exams
+
+## Dataset Generation
+
+- generate topics
+- generate questions
+    - how to avoid duplicates?
+    - initial difficulty?
+        - will later be calculated based on the completion rate
+- generate solutions?
+    - yes: faster, cheaper, high quality
+    - no: more personalized
+    - hybrid
+- generate explanations?
+    - same as above, personalization more important
+- question types
+    - multiple choice
+    - open-ended
+    - fill in the gaps
+    - true/false
+    - matching
+    - problem-solving (e.g. maths), same as open ended?
+    - multi modal (e.g. listening, documentary)
+    - structure
+        - json? most flexible
+        - tables? enforce correctness, easier queries
+- retrieval
+    - RAG?
+        - most flexible
+    - tag-based?
+        - cheapest
+        - can have a tree structure for easy filtering
+        - subject, difficulty, type...
+    - filter afterwards, no deterministic solution can fit all usecases
+    - hard-filters
+        - question type
+        - question amount
+        - subject?
+- exam generation
+    - new exam: ignore already asked questions unless they were wrong
+    - llm pipeline:
+        - query
+        - filter
+        - repeat
+- save user answers
+    - exact answers where possible
+    - grading otherwise
+    - can later use to verify difficulty and correctness
+
+## Schemas
+
+- topics
+    - topic_id
+    - parent_topic_id
+    - label
+- questions (no updates\*)
+    - question_id
+    - active boolean
+    - short description / title
+    - question jsonb
+    - answer jsonb
+    - question_topics
+        - topic_id
+- question jsonb
+    - type
+        - multiple_choice
+        - open_ended
+        - boolean
+        - matching
+    - multiple_choice
+        - answers[]
+    - matching
+        - left[]
+        - right[]
+- answer jsonb
+    - type: same as question
+    - multiple_choice
+        - selected_index[]
+    - open_ended
+        - answer
+    - boolean
+        - answer bool
+    - matching
+        - left[]
+        - right[]
+- exams
+    - exam_id
+    - student_id
+    - created_at
+    - started_at
+    - submitted_at
+    - graded_at
+    - grade
+    - exam_questions
+        - exam_id
+        - question_id
+        - reported_at
+        - answer jsonb
+        - grade [0,1]
+        - grading_comment
+- students
+    - student_id
+    - username
+    - grade_level
+    - country
+
+## Endpoints
+
+- /login
+    - takes in a username, returns uuid + cookie (creates if missing)
+    - mock
+- /admin
+    - /topics
+        - GET
+        - /create
+            - takes an optional parent
+        - /{id}
+            - DELETE
+    - /dataset
+        - GET
+            - returns complete list
+        - /generate
+            - takes in a prompt
+            - returns 202 accepted
+        - /jobs
+            - returns list of running jobs
+            - running job list is in-memory
+- /exams
+    - /create
+        - takes a prompt, returns exam id
+- /exams/{id}
+    - GET
+        - returns exam + current status (e.g. will be called after grading)
+        - returns different things based on the state
+            - started, submitted, graded...
+    - /start
+        - returns the same as GET
+    - POST /submit-answer/{questionId}
+        - does not return the solution
+        - can be called again for the same question until exam graded
+        - validates that answer format matches the question
+    - POST /report/{questionId}
+    - POST /grade
+        - returns the same as GET so that UI immediately gets graded result
