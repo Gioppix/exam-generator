@@ -5,9 +5,9 @@ import {
     listExams,
     startExam,
     submitAnswer,
-    reportQuestion,
-    gradeExam
+    reportQuestion
 } from '../modules/exams/db.js';
+import { gradeExam } from '../modules/exams/grading.js';
 import {
     CreateExamBodySchema,
     ExamDetailSchema,

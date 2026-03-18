@@ -5,6 +5,7 @@
     import type { Writable } from 'svelte/store';
     import type { paths } from '../../../../../types/api';
     import type { Answer } from './+page.js';
+    import { gradeColors } from '$lib/utils';
 
     type ApiQuestion =
         paths['/exams/{id}']['get']['responses'][200]['content']['application/json']['questions'][number];
@@ -203,20 +204,27 @@
                 oninput={(e) => setOpenEnded((e.target as HTMLTextAreaElement).value)}
             ></textarea>
         {:else}
-            <div class="rounded border px-3 py-2 text-sm">
-                {#if $answerWritable?.type === 'open_ended' && $answerWritable.answer}
+            {@const openGrade =
+                isDone && q.grade != null ? gradeColors(Math.round(q.grade * 100)) : null}
+            {@const hasAnswer = $answerWritable?.type === 'open_ended' && $answerWritable.answer}
+            <div
+                class="rounded border px-3 py-2 text-sm {openGrade
+                    ? `${openGrade.border} ${openGrade.bg}`
+                    : ''}"
+            >
+                {#if hasAnswer}
                     {$answerWritable.answer}
                 {:else}
-                    <span class="text-muted-foreground italic">No answer</span>
+                    {@const red = gradeColors(0)}
+                    <span class="italic {isDone ? red.text : 'text-muted-foreground'}"
+                        >No answer</span
+                    >
                 {/if}
             </div>
             {#if isDone && q.correct_answer?.type === 'open_ended'}
-                <div
-                    class="rounded border border-green-200 bg-green-50 px-3 py-2 text-sm dark:border-green-800 dark:bg-green-950"
-                >
-                    <span class="text-xs font-medium text-green-700 dark:text-green-400"
-                        >Expected:
-                    </span>{q.correct_answer.answer}
+                <div class="rounded border px-3 py-2 text-sm">
+                    <span class="text-xs font-medium text-muted-foreground">Expected: </span>{q
+                        .correct_answer.answer}
                 </div>
             {/if}
         {/if}
@@ -278,9 +286,10 @@
 
     <!-- Per-question grade -->
     {#if isDone && q.grade != null}
+        {@const qColors = gradeColors(Math.round(q.grade * 100))}
         <div class="flex items-center justify-between border-t pt-2">
             <span class="text-xs text-muted-foreground">{q.grading_comment ?? ''}</span>
-            <span class="text-xs font-semibold">{Math.round(q.grade * 100)}%</span>
+            <span class="text-xs font-semibold {qColors.text}">{Math.round(q.grade * 100)}%</span>
         </div>
     {/if}
 </div>

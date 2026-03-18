@@ -67,7 +67,7 @@ export const AnswerContentSchema = z.union([
 
 export type AnswerContent = z.infer<typeof AnswerContentSchema>;
 
-const explanation = { explanation: z.string().nullable() };
+const explanation = { explanation: z.string().nullish() };
 
 export const AnswerContentWithExplanationSchema = z.union([
     MultipleChoiceAnswerSchema.extend(explanation),

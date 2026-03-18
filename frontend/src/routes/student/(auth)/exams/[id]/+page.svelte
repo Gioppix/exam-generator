@@ -3,6 +3,7 @@
     import { api } from '$lib/api';
     import { Button } from '$lib/components/ui/button/index.js';
     import ExamQuestion from './ExamQuestion.svelte';
+    import { gradeColors } from '$lib/utils';
 
     let { data } = $props();
 
@@ -75,12 +76,13 @@
     {/if}
 
     {#if exam.status === 'graded' && exam.grade != null}
-        <div
-            class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 dark:border-green-800 dark:bg-green-950"
-        >
-            <p class="font-semibold text-green-800 dark:text-green-300">
-                Final grade: {Math.round(exam.grade * 100)}%
+        {@const pct = Math.round(exam.grade * 100)}
+        {@const colors = gradeColors(pct)}
+        <div class="rounded-lg border px-5 py-4">
+            <p class="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                Final Grade
             </p>
+            <p class="text-3xl font-bold {colors.text}">{pct}%</p>
         </div>
     {/if}
 

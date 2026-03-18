@@ -14,6 +14,7 @@ const QuestionSelectionSchema = z.object({
         .describe('IDs of questions to include in the exam. Select 5–15 questions.')
 });
 
+// TODO: make this filter by topic and use tools
 export async function generateExam(prompt: string, student_id: string): Promise<string> {
     const [questions, topics] = await Promise.all([listQuestions(), listTopics()]);
 

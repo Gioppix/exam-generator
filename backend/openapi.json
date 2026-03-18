@@ -203,11 +203,7 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": [
-                                                            "type",
-                                                            "selected_index",
-                                                            "explanation"
-                                                        ]
+                                                        "required": ["type", "selected_index"]
                                                     },
                                                     {
                                                         "type": "object",
@@ -222,11 +218,7 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": [
-                                                            "type",
-                                                            "answer",
-                                                            "explanation"
-                                                        ]
+                                                        "required": ["type", "answer"]
                                                     },
                                                     {
                                                         "type": "object",
@@ -241,11 +233,7 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": [
-                                                            "type",
-                                                            "answer",
-                                                            "explanation"
-                                                        ]
+                                                        "required": ["type", "answer"]
                                                     },
                                                     {
                                                         "type": "object",
@@ -277,7 +265,7 @@
                                                                 "nullable": true
                                                             }
                                                         },
-                                                        "required": ["type", "pairs", "explanation"]
+                                                        "required": ["type", "pairs"]
                                                     }
                                                 ]
                                             },
@@ -766,8 +754,7 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
@@ -783,11 +770,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -802,11 +785,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -838,11 +817,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "pairs",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "pairs"]
                                                             }
                                                         ]
                                                     },
@@ -1104,8 +1079,7 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
@@ -1121,11 +1095,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1140,11 +1110,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1176,11 +1142,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "pairs",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "pairs"]
                                                             }
                                                         ]
                                                     },
@@ -1582,8 +1544,7 @@
                                                                 },
                                                                 "required": [
                                                                     "type",
-                                                                    "selected_index",
-                                                                    "explanation"
+                                                                    "selected_index"
                                                                 ]
                                                             },
                                                             {
@@ -1599,11 +1560,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1618,11 +1575,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "answer",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "answer"]
                                                             },
                                                             {
                                                                 "type": "object",
@@ -1654,11 +1607,7 @@
                                                                         "nullable": true
                                                                     }
                                                                 },
-                                                                "required": [
-                                                                    "type",
-                                                                    "pairs",
-                                                                    "explanation"
-                                                                ]
+                                                                "required": ["type", "pairs"]
                                                             }
                                                         ]
                                                     },

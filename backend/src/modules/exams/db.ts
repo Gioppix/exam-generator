@@ -152,11 +152,3 @@ export async function reportQuestion(exam_id: string, question_id: string): Prom
         [exam_id, question_id]
     );
 }
-
-export async function gradeExam(exam_id: string): Promise<void> {
-    // Marks as submitted; grading logic is deferred
-    await pool.query(
-        'UPDATE exams SET submitted_at = NOW() WHERE exam_id = $1 AND submitted_at IS NULL',
-        [exam_id]
-    );
-}
