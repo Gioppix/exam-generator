@@ -2,7 +2,6 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 import { serve } from '@hono/node-server';
 import { cors } from 'hono/cors';
 import { fileURLToPath } from 'url';
-import exampleRouter from './routers/example.js';
 import topicsRouter from './routers/topics.js';
 import datasetRouter from './routers/dataset.js';
 import authRouter from './routers/auth.js';
@@ -22,7 +21,6 @@ if (ARTIFICIAL_DELAY_MS > 0) {
 
 app.get('/health', (c) => c.json({ status: 'ok' }));
 
-app.route('/', exampleRouter);
 app.route('/', topicsRouter);
 app.route('/', datasetRouter);
 app.route('/', authRouter);
