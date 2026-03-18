@@ -15,6 +15,7 @@
     let generating = $state(false);
 
     function buildTree(flat: Topic[]): TopicNode[] {
+        // eslint-disable-next-line svelte/prefer-svelte-reactivity
         const map = new Map<string, TopicNode>();
         for (const t of flat) map.set(t.topic_id, { ...t, children: [] });
         const roots: TopicNode[] = [];
