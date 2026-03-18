@@ -4,45 +4,6 @@
  */
 
 export interface paths {
-    '/example/hello': {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Hello world */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        'application/json': {
-                            /** Format: uuid */
-                            id: string;
-                            message: string;
-                        };
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     '/admin/topics': {
         parameters: {
             query?: never;
@@ -556,6 +517,7 @@ export interface paths {
                         'application/json': {
                             /** Format: uuid */
                             exam_id: string;
+                            exam_title: string;
                             created_at: string;
                             started_at: string | null;
                             submitted_at: string | null;
@@ -604,6 +566,7 @@ export interface paths {
                         'application/json': {
                             /** Format: uuid */
                             exam_id: string;
+                            exam_title: string;
                             /** Format: uuid */
                             student_id: string;
                             created_at: string;
@@ -749,6 +712,7 @@ export interface paths {
                         'application/json': {
                             /** Format: uuid */
                             exam_id: string;
+                            exam_title: string;
                             /** Format: uuid */
                             student_id: string;
                             created_at: string;
@@ -1001,6 +965,7 @@ export interface paths {
                         'application/json': {
                             /** Format: uuid */
                             exam_id: string;
+                            exam_title: string;
                             /** Format: uuid */
                             student_id: string;
                             created_at: string;

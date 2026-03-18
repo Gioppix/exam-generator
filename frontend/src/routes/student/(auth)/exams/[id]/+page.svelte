@@ -51,8 +51,7 @@
 <div class="max-w-2xl space-y-6">
     <div class="flex items-start justify-between gap-4">
         <div>
-            <h1 class="text-xl font-semibold">Exam</h1>
-            <p class="mt-1 font-mono text-xs text-muted-foreground">{exam.exam_id}</p>
+            <h1 class="text-xl font-semibold">{exam.exam_title}</h1>
         </div>
         <span
             class="shrink-0 rounded-full px-3 py-1 text-xs font-medium {statusClass[exam.status]}"

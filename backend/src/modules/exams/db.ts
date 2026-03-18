@@ -26,10 +26,10 @@ function deriveStatus(row: {
     return 'created';
 }
 
-export async function createExam(student_id: string): Promise<string> {
+export async function createExam(student_id: string, exam_title: string): Promise<string> {
     const { rows } = await pool.query<{ exam_id: string }>(
-        'INSERT INTO exams (student_id) VALUES ($1) RETURNING exam_id',
-        [student_id]
+        'INSERT INTO exams (student_id, exam_title) VALUES ($1, $2) RETURNING exam_id',
+        [student_id, exam_title]
     );
     return rows[0].exam_id;
 }
@@ -47,6 +47,7 @@ export async function listExams(student_id: string): Promise<ExamSummary[]> {
     const { rows } = await pool.query(
         `SELECT
             e.exam_id,
+            e.exam_title,
             e.created_at,
             e.started_at,
             e.submitted_at,
@@ -75,7 +76,7 @@ export async function listExams(student_id: string): Promise<ExamSummary[]> {
 
 export async function getExam(exam_id: string): Promise<ExamDetail | null> {
     const { rows: examRows } = await pool.query(
-        `SELECT exam_id, student_id, created_at, started_at, submitted_at, graded_at, grade
+        `SELECT exam_id, exam_title, student_id, created_at, started_at, submitted_at, graded_at, grade
          FROM exams WHERE exam_id = $1`,
         [exam_id]
     );
@@ -115,6 +116,7 @@ export async function getExam(exam_id: string): Promise<ExamDetail | null> {
 
     return ExamDetailSchema.parse({
         exam_id: exam.exam_id,
+        exam_title: exam.exam_title,
         student_id: exam.student_id,
         created_at: toISO(exam.created_at),
         started_at: toISO(exam.started_at),

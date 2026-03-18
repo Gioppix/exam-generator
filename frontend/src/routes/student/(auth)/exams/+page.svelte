@@ -72,8 +72,8 @@
                     class="flex items-center gap-4 rounded-lg border px-4 py-3 text-sm transition-colors hover:bg-muted/50"
                 >
                     <div class="min-w-0 flex-1">
-                        <p class="truncate font-mono text-xs text-muted-foreground">
-                            {exam.exam_id.slice(0, 8)}…
+                        <p class="truncate text-sm font-medium">
+                            {exam.exam_title}
                         </p>
                         <p class="mt-0.5 text-xs text-muted-foreground">
                             {new Date(exam.created_at).toLocaleString()}

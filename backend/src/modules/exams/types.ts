@@ -63,6 +63,7 @@ export type ExamQuestion = z.infer<typeof ExamQuestionSchema>;
 
 export const ExamDetailSchema = z.object({
     exam_id: z.string().uuid(),
+    exam_title: z.string(),
     student_id: z.string().uuid(),
     created_at: z.string(),
     started_at: z.string().nullable(),
@@ -79,6 +80,7 @@ export type ExamDetail = z.infer<typeof ExamDetailSchema>;
 
 export const ExamSummarySchema = z.object({
     exam_id: z.string().uuid(),
+    exam_title: z.string(),
     created_at: z.string(),
     started_at: z.string().nullable(),
     submitted_at: z.string().nullable(),
